@@ -15,7 +15,7 @@ internal class StockController
 
     public bool Sell(string code)
     {
-      return  _stock.TryRemove(code, out TShirt removedShirt);
+        return _stock.TryRemove(code, out TShirt? removedShirt);
     }
     public (TShirtStatus Status, TShirt TShirt) SelectRandomShirt()
     {
@@ -27,14 +27,14 @@ internal class StockController
         var selectedCode = keys[Random.Shared.Next(keys.Count)];
 
         // return _stock[selectedCode];
-        var hasTShirt = _stock.TryGetValue(selectedCode, out TShirt shirt);
-        if (hasTShirt) return (TShirtStatus.Success, shirt);
+        var hasTShirt = _stock.TryGetValue(selectedCode, out TShirt? shirt);
+        if (hasTShirt) return (TShirtStatus.Success, shirt ?? TShirt.Empty);
         return (TShirtStatus.ChosenShirtSold, TShirt.Empty);
     }
 
     public void DisplayStock()
     {
-        Console.WriteLine($"\r\n{_stock.Count} items left in stock;");
+        Console.WriteLine($"{Environment.NewLine}{_stock.Count} items left in stock;");
         foreach (TShirt shirt in _stock.Values)
         {
             Console.WriteLine(shirt);

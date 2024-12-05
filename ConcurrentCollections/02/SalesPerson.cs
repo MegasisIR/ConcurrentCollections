@@ -14,10 +14,11 @@ internal class SalesPerson
         DateTime startTime = DateTime.Now;
         while (DateTime.Now - startTime < workDay)
         {
-            var result = ServeCustomer(controller);
-            if (result is { Status: "" })
-                Console.WriteLine($"{Name}: {result.Status}");
-            if (result is { ShirtsInStock: false })
+            var resultServeCustomer = ServeCustomer(controller);
+
+            if (resultServeCustomer is { Status:not "" })
+                Console.WriteLine($"{Name}: {resultServeCustomer.Status}");
+            if (resultServeCustomer is { ShirtsInStock: false })
                 break;
         }
     }
@@ -39,7 +40,7 @@ internal class SalesPerson
             bool sold = controller.Sell(shirt.Code);
             if (sold)
                 return (true, $"Sold {shirt.Name}");
-            return (false, $"Can't sell {shirt.Name}: already sold");
+            return (false, $"Can't sell {shirt.Name} : already sold");
         }
 
         return (true, string.Empty);
